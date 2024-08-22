@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using NumeriuUzsakymasApi.Models;
 using NumeriuUzsakymasApi.Services;
 
 namespace NumeriuUzsakymasApi.Controllers
@@ -14,10 +15,11 @@ namespace NumeriuUzsakymasApi.Controllers
         }
 
         [HttpPost]
-        [Route("SortAndSave")]
-        public async Task<IActionResult> SortAndSave(int[] numbers)
+        [Route("AddNumberOrdering")]
+        public async Task<IActionResult> AddNumberOrdering([FromBody] AddNumberOrderingRequest request)
         {
-            _numberOrderingService.SaveSortedNumber(numbers);
+
+            _numberOrderingService.SaveSortedNumber(request.Numbers);
             return Ok();
         }
     }

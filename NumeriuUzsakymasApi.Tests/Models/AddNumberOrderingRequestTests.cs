@@ -1,0 +1,44 @@
+using System.ComponentModel.DataAnnotations;
+using NumeriuUzsakymasApi.Models;
+using NumeriuUzsakymasApi.Tests.Helpers;
+
+namespace NumeriuUzsakymasApi.Tests.Models
+{
+    [TestClass]
+    public class AddNumberOrderingRequestTests
+    {
+        [TestMethod]
+        public void Numbers_ShouldPassValidation_WhenModelIsValid()
+        {
+            // Arrange
+            var model = new AddNumberOrderingRequest
+            {
+                Numbers = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
+            };
+
+            // Act
+            var results = ModelValidationHelper.ValidateModel(model);
+
+            // Assert
+            Assert.AreEqual(0, results.Count);
+        }
+
+        [TestMethod]
+        public void Numbers_ShouldNotPassValidation_WhenAtLeastOneNumberIsNotInRangeFrom1To10()
+        {
+            // Arrange
+            var model = new AddNumberOrderingRequest
+            {
+                Numbers = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 11 }
+            };
+
+            // Act
+            var results = ModelValidationHelper.ValidateModel(model);
+
+            // Assert
+            Assert.AreNotEqual(0, results.Count);
+        }
+
+    }
+
+}
