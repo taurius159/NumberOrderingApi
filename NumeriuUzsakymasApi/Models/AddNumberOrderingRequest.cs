@@ -9,6 +9,7 @@ namespace NumeriuUzsakymasApi.Models
         [MinLength(1)]
         [MaxLength(10)]
         [NumberOneToTen]
+        [UniqueNumbers]
         public int[] Numbers { get; set; }
     }
 }
