@@ -1,8 +1,8 @@
-namespace NumeriuUzsakymasApi.Services
+namespace NumeriuUzsakymasApi.Services.Sorting
 {
-    public class SortingService : ISortingService
+    public class BubbleSortService : ISortingService
     {
-        public int[] BubbleSort(int[] numbers)
+        public int[] Sort(int[] numbers)
         {
             for (int i = 0; i < numbers.Length - 1; i++)
             {
