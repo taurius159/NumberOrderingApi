@@ -1,3 +1,4 @@
+using NumberOrderingApi.Data.Repositories;
 using NumberOrderingApi.Services.Sorting;
 
 namespace NumberOrderingApi.Services
@@ -5,18 +6,21 @@ namespace NumberOrderingApi.Services
     public class NumberOrderingService : INumberOrderingService
     {
         private readonly ISortingService _sortingService;
-        private readonly string _filePath = "result.txt";
-
-        public NumberOrderingService(ISortingService sortingService)
+        private readonly INumbersRepository _numbersRepository;
+        public NumberOrderingService(ISortingService sortingService, INumbersRepository numbersRepository)
         {
             _sortingService = sortingService;
+            _numbersRepository = numbersRepository;
         }
 
-        public async void SaveSortedNumber(int[] numbers)
+        public void SortAndSaveNumbers(int[] numbers)
         {
-            var sortedNumbers = _sortingService.Sort(numbers);
+            _numbersRepository.SaveResults(_sortingService.Sort(numbers));
+        }
 
-            await System.IO.File.WriteAllTextAsync(_filePath, string.Join(" ", sortedNumbers));
+        public int[] GetLastSortedNumbers()
+        {
+            return _numbersRepository.ReadLastSavedFile();
         }
     }
 }

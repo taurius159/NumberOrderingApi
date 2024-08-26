@@ -1,3 +1,4 @@
+using NumberOrderingApi.Data.Repositories;
 using NumberOrderingApi.Services;
 using NumberOrderingApi.Services.Sorting;
 
@@ -6,6 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
+builder.Services.AddTransient<INumbersRepository, TxtNumbersRepository>(_ =>
+{
+    return new TxtNumbersRepository("Data");
+});
 builder.Services.AddTransient<ISortingService, BubbleSortService>();
 builder.Services.AddTransient<INumberOrderingService, NumberOrderingService>();
 

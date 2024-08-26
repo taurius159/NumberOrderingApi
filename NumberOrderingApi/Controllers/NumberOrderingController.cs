@@ -18,8 +18,7 @@ namespace NumberOrderingApi.Controllers
         [Route("AddNumberOrdering")]
         public async Task<IActionResult> AddNumberOrdering([FromBody] AddNumberOrderingRequest request)
         {
-
-            _numberOrderingService.SaveSortedNumber(request.Numbers);
+            _numberOrderingService.SortAndSaveNumbers(request.Numbers);
             return Ok();
         }
     }
