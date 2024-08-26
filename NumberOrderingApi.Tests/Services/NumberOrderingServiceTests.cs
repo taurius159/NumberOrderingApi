@@ -1,7 +1,7 @@
 using Moq;
-using NumeriuUzsakymasApi.Services;
-using NumeriuUzsakymasApi.Services.Sorting;
-namespace NumeriuUzsakymasApi.Tests.Services
+using NumberOrderingApi.Services;
+using NumberOrderingApi.Services.Sorting;
+namespace NumberOrderingApi.Tests.Services
 {
     [TestClass]
     public class NumberOrderingServiceTests
@@ -30,7 +30,7 @@ namespace NumeriuUzsakymasApi.Tests.Services
             // Assert
             _sortingServiceMock.Verify(x => x.Sort(numbers), Times.Once);
             string expected = "1 2 3 4 5 6 7 8 9";
-            string actual = System.IO.File.ReadAllText("resultatas.txt");
+            string actual = System.IO.File.ReadAllText("result.txt");
             Assert.AreEqual(expected, actual);
         }
     }

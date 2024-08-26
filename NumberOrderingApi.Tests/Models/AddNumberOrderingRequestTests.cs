@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using NumeriuUzsakymasApi.Models;
-using NumeriuUzsakymasApi.Tests.Helpers;
+using NumberOrderingApi.Models;
+using NumberOrderingApi.Tests.Helpers;
 
-namespace NumeriuUzsakymasApi.Tests.Models
+namespace NumberOrderingApi.Tests.Models
 {
     [TestClass]
     public class AddNumberOrderingRequestTests

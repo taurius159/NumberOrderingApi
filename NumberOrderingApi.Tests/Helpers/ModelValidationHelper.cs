@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace NumeriuUzsakymasApi.Tests.Helpers
+namespace NumberOrderingApi.Tests.Helpers
 {
     public class ModelValidationHelper
     {

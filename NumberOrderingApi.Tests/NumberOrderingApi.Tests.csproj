@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NumeriuUzsakymasApi\NumeriuUzsakymasApi.csproj" />
+    <ProjectReference Include="..\NumberOrderingApi\NumberOrderingApi.csproj" />
   </ItemGroup>
 
 </Project>
