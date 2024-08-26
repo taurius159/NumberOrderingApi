@@ -1,14 +1,14 @@
 # ASP.NET Core WebApi for numbers service
 
-## Run Unit Tests
+## Run Unit Tests using .NET CLI (VScode)
 
 ```bash
-dotnet test NumeriuUzsakymasApi.Tests/NumeriuUzsakymasApi.Tests.csproj
+dotnet test NumberOrderingApi.Tests/NumberOrderingApi.Tests.csproj
 ```
 
-## Run App locally
+## Run App locally using .NET CLI (VScode)
 
 ```bash
-cd NumeriuUzsakymasApi
+cd NumberOrderingApi
 dotnet run --launch-profile https
 ```
