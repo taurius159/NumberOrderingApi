@@ -1,6 +1,0 @@
-@NumeriuUzsakymasApi_HostAddress = http://localhost:5257
-
-GET {{NumeriuUzsakymasApi_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

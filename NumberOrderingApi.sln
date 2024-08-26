@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumberOrderingApi", "NumberOrderingApi\NumberOrderingApi.csproj", "{0F8C7EE1-1FEF-42F1-99F2-EC9FB613CC2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumberOrderingApi.Tests", "NumberOrderingApi.Tests\NumberOrderingApi.Tests.csproj", "{83678063-17AC-431E-B9D8-B641D6C509AF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F8C7EE1-1FEF-42F1-99F2-EC9FB613CC2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F8C7EE1-1FEF-42F1-99F2-EC9FB613CC2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F8C7EE1-1FEF-42F1-99F2-EC9FB613CC2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F8C7EE1-1FEF-42F1-99F2-EC9FB613CC2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83678063-17AC-431E-B9D8-B641D6C509AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83678063-17AC-431E-B9D8-B641D6C509AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83678063-17AC-431E-B9D8-B641D6C509AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83678063-17AC-431E-B9D8-B641D6C509AF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
