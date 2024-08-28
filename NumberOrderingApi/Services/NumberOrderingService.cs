@@ -15,12 +15,17 @@ namespace NumberOrderingApi.Services
 
         public void SortAndSaveNumbers(int[] numbers)
         {
+            if(numbers == null)
+            {
+                throw new ArgumentNullException(nameof(numbers));
+            }
+            
             _numbersRepository.SaveResults(_sortingService.Sort(numbers));
         }
 
         public int[] GetLastSortedNumbers()
         {
-            return _numbersRepository.ReadLastSavedFile();
+            return _numbersRepository.ReadLastSavedResults();
         }
     }
 }

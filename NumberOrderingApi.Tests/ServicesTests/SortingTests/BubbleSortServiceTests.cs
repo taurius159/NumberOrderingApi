@@ -1,5 +1,5 @@
 using NumberOrderingApi.Services.Sorting;
-namespace NumberOrderingApi.Tests.Services.Sorting
+namespace NumberOrderingApi.Tests.ServicesTests.SortingTests
 {
     [TestClass]
     public class BubbleSortServiceTests
