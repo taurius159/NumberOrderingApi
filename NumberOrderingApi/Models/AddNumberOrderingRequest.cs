@@ -6,7 +6,7 @@ namespace NumberOrderingApi.Models
     public class AddNumberOrderingRequest
     {
         [Required]
-        [MinLength(1)]
+        [MinLength(2)]
         [MaxLength(10)]
         [NumberOneToTen]
         [UniqueNumbers]

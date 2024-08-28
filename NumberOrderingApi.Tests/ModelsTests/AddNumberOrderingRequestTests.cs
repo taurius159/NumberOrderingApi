@@ -56,7 +56,7 @@ namespace NumberOrderingApi.Tests.Models
         }
 
         [TestMethod]
-        public void Numbers_ShouldNotPassValidation_WhenNumbersAreNotProvided()
+        public void Numbers_ShouldNotPassValidation_WhenLessThan2NumbersProvided()
         {
             // Arrange
             var model = new AddNumberOrderingRequest
