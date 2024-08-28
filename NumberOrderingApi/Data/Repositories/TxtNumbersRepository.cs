@@ -15,7 +15,7 @@ namespace NumberOrderingApi.Data.Repositories
             {
                 Directory.CreateDirectory(_fileDirectory);
             }
-            //save even second and milisecond
+
             var filePath = Path.Combine(_fileDirectory, $"{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.txt");
 
             var content = string.Join(" ", numbers);
@@ -23,7 +23,7 @@ namespace NumberOrderingApi.Data.Repositories
             File.AppendAllLines(filePath, [content]);
         }
 
-        public int[] ReadLastSavedFile()
+        public int[] ReadLastSavedResults()
         {
             if (!Directory.Exists(_fileDirectory) || !Directory.EnumerateFiles(_fileDirectory).Any())
             {
