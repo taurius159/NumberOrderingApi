@@ -11,30 +11,66 @@ namespace NumberOrderingApi.Data.Repositories
 
         public async Task SaveResults(int[] numbers)
         {
-            if(!Directory.Exists(_fileDirectory))
-            {
-                Directory.CreateDirectory(_fileDirectory);
-            }
+            EnsureDirectoryExists(_fileDirectory);
 
-            var filePath = Path.Combine(_fileDirectory, $"{DateTime.Now:yyyyMMddHHmmssfff}.txt");
+            var filePath = CreateFilePathWithTimestamp(_fileDirectory);
 
-            var content = string.Join(" ", numbers);
+            var content = CreateFileContentFromIntArray(numbers);
 
-            await File.AppendAllLinesAsync(filePath, [content]);
+            await WriteToFileAsync(filePath, content);
         }
 
         public async Task<int[]> ReadLastSavedResults()
         {
-            if (!Directory.Exists(_fileDirectory) || !Directory.EnumerateFiles(_fileDirectory).Any())
+            if (DirectoryDoesNotExistOrIsEmpty())
             {
                 return [];
             }
 
+            var fileContent = await GetTextFromLatestFile();
+
+            return ParseTextToNumbers(fileContent);
+        }
+        
+        private string CreateFilePathWithTimestamp(string fileDirectory)
+        {
+            return Path.Combine(fileDirectory, $"{DateTime.Now:yyyyMMddHHmmssfff}.txt");
+        }
+
+        private string CreateFileContentFromIntArray(int[] numbers)
+        {
+            return string.Join(" ", numbers);
+        }
+
+        private async Task WriteToFileAsync(string filePath, string content)
+        {
+            await File.WriteAllTextAsync(filePath, content);
+        }
+
+        private void EnsureDirectoryExists(string fileDirectory)
+        {
+            if(!Directory.Exists(fileDirectory))
+            {
+                Directory.CreateDirectory(fileDirectory);
+            }
+        }
+
+        private async Task<string> GetTextFromLatestFile()
+        {
             var lastFile = Directory.GetFiles(_fileDirectory).OrderByDescending(f => new FileInfo(f).CreationTime).First();
-            
             var fileContent = await File.ReadAllTextAsync(lastFile);
 
-            return fileContent.Split(" ").Select(int.Parse).ToArray();
+            return fileContent;
+        }
+
+        private int[] ParseTextToNumbers(string content)
+        {
+            return content.Split(' ').Select(int.Parse).ToArray();
+        }
+
+        private bool DirectoryDoesNotExistOrIsEmpty()
+        {
+            return !Directory.Exists(_fileDirectory) || !Directory.EnumerateFiles(_fileDirectory).Any();
         }
     }
 }

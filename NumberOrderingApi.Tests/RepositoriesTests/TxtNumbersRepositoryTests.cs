@@ -38,7 +38,7 @@ namespace NumberOrderingApi.Tests.Repositories
             Assert.AreEqual(1, files.Length);
 
             var fileContent = await File.ReadAllTextAsync(files[0]);
-            Assert.AreEqual("1 2 3\n", fileContent);
+            Assert.AreEqual("1 2 3", fileContent);
         }
 
         [TestMethod]
