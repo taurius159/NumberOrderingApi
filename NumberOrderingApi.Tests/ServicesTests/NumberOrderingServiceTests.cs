@@ -21,7 +21,7 @@ namespace NumberOrderingApi.Tests.Services
         }
 
         [TestMethod]
-        public void SortAndSaveNumbers_ShouldCallSortAndSaveResults()
+        public async void SortAndSaveNumbers_ShouldCallSortAndSaveResults()
         {
             // Arrange
             var numbers = new[] { 3, 1, 2 };
@@ -29,7 +29,7 @@ namespace NumberOrderingApi.Tests.Services
             _mockSortingService.Setup(s => s.Sort(numbers)).Returns(sortedNumbers);
 
             // Act
-            _numberOrderingService.SortAndSaveNumbers(numbers);
+            await _numberOrderingService.SortAndSaveNumbers(numbers);
 
             // Assert
             _mockSortingService.Verify(s => s.Sort(numbers), Times.Once);
@@ -37,14 +37,14 @@ namespace NumberOrderingApi.Tests.Services
         }
 
         [TestMethod]
-        public void GetLastSortedNumbers_ShouldReturnLastSavedResults()
+        public async void GetLastSortedNumbers_ShouldReturnLastSavedResults()
         {
             // Arrange
             var lastSavedNumbers = new[] { 1, 2, 3 };
-            _mockNumbersRepository.Setup(r => r.ReadLastSavedResults()).Returns(lastSavedNumbers);
+            _mockNumbersRepository.Setup(r => r.ReadLastSavedResults()).ReturnsAsync(lastSavedNumbers);
 
             // Act
-            var result = _numberOrderingService.GetLastSortedNumbers();
+            var result = await _numberOrderingService.GetLastSortedNumbers();
 
             // Assert
             Assert.AreEqual(lastSavedNumbers, result);
