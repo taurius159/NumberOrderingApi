@@ -9,21 +9,21 @@ namespace NumberOrderingApi.Data.Repositories
             _fileDirectory = fileDirectory;
         }
 
-        public void SaveResults(int[] numbers)
+        public async Task SaveResults(int[] numbers)
         {
             if(!Directory.Exists(_fileDirectory))
             {
                 Directory.CreateDirectory(_fileDirectory);
             }
 
-            var filePath = Path.Combine(_fileDirectory, $"{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.txt");
+            var filePath = Path.Combine(_fileDirectory, $"{DateTime.Now:yyyyMMddHHmmssfff}.txt");
 
             var content = string.Join(" ", numbers);
 
-            File.AppendAllLines(filePath, [content]);
+            await File.AppendAllLinesAsync(filePath, [content]);
         }
 
-        public int[] ReadLastSavedResults()
+        public async Task<int[]> ReadLastSavedResults()
         {
             if (!Directory.Exists(_fileDirectory) || !Directory.EnumerateFiles(_fileDirectory).Any())
             {
@@ -31,8 +31,10 @@ namespace NumberOrderingApi.Data.Repositories
             }
 
             var lastFile = Directory.GetFiles(_fileDirectory).OrderByDescending(f => new FileInfo(f).CreationTime).First();
+            
+            var fileContent = await File.ReadAllTextAsync(lastFile);
 
-            return File.ReadAllText(lastFile).Split(" ").Select(int.Parse).ToArray();
+            return fileContent.Split(" ").Select(int.Parse).ToArray();
         }
     }
 }

@@ -2,8 +2,8 @@ namespace NumberOrderingApi.Services
 {
     public interface INumberOrderingService
     {
-        void SortAndSaveNumbers(int[] numbers);
+        Task SortAndSaveNumbers(int[] numbers);
 
-        int[] GetLastSortedNumbers();
+        Task<int[]> GetLastSortedNumbers();
     }
 }

@@ -15,11 +15,19 @@ namespace NumberOrderingApi.Controllers
         }
 
         [HttpPost]
-        [Route("AddNumberOrdering")]
-        public async Task<IActionResult> AddNumberOrdering([FromBody] AddNumberOrderingRequest request)
+        [Route("OrderNumbers")]
+        public async Task<IActionResult> OrderNumbers([FromBody] AddNumberOrderingRequest request)
         {
-            _numberOrderingService.SortAndSaveNumbers(request.Numbers);
+            await _numberOrderingService.SortAndSaveNumbers(request.Numbers);
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("LoadLatestOrderedNumbers")]
+        public async Task<IActionResult> LoadLatestOrderedNumbers()
+        {
+            var numbers = await _numberOrderingService.GetLastSortedNumbers();
+            return Ok(numbers);
         }
     }
 }

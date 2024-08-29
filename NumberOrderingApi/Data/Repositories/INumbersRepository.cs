@@ -2,7 +2,7 @@ namespace NumberOrderingApi.Data.Repositories
 {
     public interface INumbersRepository
     {
-        public void SaveResults(int[] content);
-        public int[] ReadLastSavedResults();
+        public Task SaveResults(int[] content);
+        public Task<int[]> ReadLastSavedResults();
     }
 }

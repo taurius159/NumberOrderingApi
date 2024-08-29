@@ -13,19 +13,20 @@ namespace NumberOrderingApi.Services
             _numbersRepository = numbersRepository;
         }
 
-        public void SortAndSaveNumbers(int[] numbers)
+        public async Task SortAndSaveNumbers(int[] numbers)
         {
-            if(numbers == null)
+            if(numbers == null || numbers.Length == 0)
             {
                 throw new ArgumentNullException(nameof(numbers));
             }
             
-            _numbersRepository.SaveResults(_sortingService.Sort(numbers));
+            await _numbersRepository.SaveResults(_sortingService.Sort(numbers));
         }
 
-        public int[] GetLastSortedNumbers()
+        public async Task<int[]> GetLastSortedNumbers()
         {
-            return _numbersRepository.ReadLastSavedResults();
+            var lastNumbers = await _numbersRepository.ReadLastSavedResults();
+            return lastNumbers;
         }
     }
 }
