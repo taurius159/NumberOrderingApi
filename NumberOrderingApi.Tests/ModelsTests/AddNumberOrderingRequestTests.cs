@@ -8,7 +8,7 @@ namespace NumberOrderingApi.Tests.Models
     public class AddNumberOrderingRequestTests
     {
         [TestMethod]
-        public void Numbers_ShouldPassValidation_WhenModelIsValid()
+        public void Numbers_ShouldPassValidation_WhenRequirementsAreMet()
         {
             // Arrange
             var model = new AddNumberOrderingRequest
@@ -27,48 +27,52 @@ namespace NumberOrderingApi.Tests.Models
         public void Numbers_ShouldNotPassValidation_WhenAtLeastOneNumberIsNotInRangeFrom1To10()
         {
             // Arrange
-            var model = new AddNumberOrderingRequest
+            var modelMoreThan10 = new AddNumberOrderingRequest
             {
-                Numbers = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 11 }
+                Numbers = new int[] { 1, 11 }
+            };
+            var modelLessThan2 = new AddNumberOrderingRequest
+            {
+                Numbers = new int[] {1}
             };
 
             // Act
-            var results = ModelValidationHelper.ValidateModel(model);
+            var resultsMoreThan10 = ModelValidationHelper.ValidateModel(modelMoreThan10);
+            var resultsLessThan2 = ModelValidationHelper.ValidateModel(modelLessThan2);
 
             // Assert
-            Assert.AreNotEqual(0, results.Count);
+            Assert.AreNotEqual(0, resultsMoreThan10.Count);
+            Assert.AreNotEqual(0, resultsLessThan2.Count);
         }
 
         [TestMethod]
-        public void Numbers_ShouldNotPassValidation_WhenMoreThan10NumbersAreProvided()
+        public void Numbers_ShouldNotPassValidation_WhenLessThan2ArePassed()
         {
             // Arrange
-            var model = new AddNumberOrderingRequest
+            var modelLessThan2  = new AddNumberOrderingRequest
             {
-                Numbers = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 2 }
+                Numbers = new int[] {1}
             };
-
             // Act
-            var results = ModelValidationHelper.ValidateModel(model);
+            var result = ModelValidationHelper.ValidateModel(modelLessThan2);
 
             // Assert
-            Assert.AreNotEqual(0, results.Count);
+            Assert.AreNotEqual(0, result.Count);
         }
 
         [TestMethod]
-        public void Numbers_ShouldNotPassValidation_WhenLessThan2NumbersProvided()
+        public void Numbers_ShouldNotPassValidation_WhenMoreThan10ArePassed()
         {
             // Arrange
-            var model = new AddNumberOrderingRequest
+            var modelMoreThan10 = new AddNumberOrderingRequest
             {
-                Numbers = new int[] { }
+                Numbers = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
             };
-
             // Act
-            var results = ModelValidationHelper.ValidateModel(model);
+            var result = ModelValidationHelper.ValidateModel(modelMoreThan10);
 
             // Assert
-            Assert.AreNotEqual(0, results.Count);
+            Assert.AreNotEqual(0, result.Count);
         }
 
         [TestMethod]
@@ -77,7 +81,7 @@ namespace NumberOrderingApi.Tests.Models
             // Arrange
             var model = new AddNumberOrderingRequest
             {
-                Numbers = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 9 }
+                Numbers = new int[] { 1, 2, 2 }
             };
 
             // Act
