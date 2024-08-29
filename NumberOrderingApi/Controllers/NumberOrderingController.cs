@@ -18,16 +18,33 @@ namespace NumberOrderingApi.Controllers
         [Route("OrderNumbers")]
         public async Task<IActionResult> OrderNumbers([FromBody] AddNumberOrderingRequest request)
         {
-            await _numberOrderingService.SortAndSaveNumbers(request.Numbers);
-            return Ok();
+            try
+            {
+                await _numberOrderingService.SortAndSaveNumbers(request.Numbers);
+                
+                return Ok("Numbers sorted and saved successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"A server error occurred while processing your request. {ex.Message}");
+            }
         }
 
         [HttpGet]
         [Route("LoadLatestOrderedNumbers")]
         public async Task<IActionResult> LoadLatestOrderedNumbers()
         {
-            var numbers = await _numberOrderingService.GetLastSortedNumbers();
-            return Ok(numbers);
+            try
+            {
+                var numbers = await _numberOrderingService.GetLastSortedNumbers();
+
+                return Ok(string.Join(" ", numbers));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"A server error occurred while processing your request. {ex.Message}");
+            }
+            
         }
     }
 }
