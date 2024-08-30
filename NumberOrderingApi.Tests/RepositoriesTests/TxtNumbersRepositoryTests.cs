@@ -76,13 +76,14 @@ namespace NumberOrderingApi.Tests.Repositories
         }
 
         [TestMethod]
-        public async Task ReadLastSavedResults_ShouldReturnLastSavedNumbers()
+        public async Task ReadLastSavedResults_ShouldReturnLastSavedNumbers_WhenAFewFilesAreSaved()
         {
             // Arrange
             var numbers1 = new[] { 1, 2, 3 };
             var numbers2 = new[] { 4, 5, 6 };
 
             await _repository.SaveResults(numbers1);
+            await Task.Delay(1); // 1 milisecond delay to ensure the first file is being saved first
             await _repository.SaveResults(numbers2);
 
             // Act
@@ -93,13 +94,27 @@ namespace NumberOrderingApi.Tests.Repositories
         }
 
         [TestMethod]
-        public async Task ReadLastSavedResults_ShouldReturnEmptyString_WhenNoFilesExist()
+        public async Task ReadLastSavedResults_ShouldReturnEmptyString_WhenNoFilesAreSaved()
         {
             // Act
             var result = await _repository.ReadLastSavedResults();
 
             // Assert
             Assert.AreEqual(string.Empty, result);
+        }
+
+        [TestMethod]
+        public async Task ReadLastSavedResults_ShouldReturnOneFileContent_WhenOneFileIsSaved()
+        {
+            // Arrange
+            var numbers = new[] { 1, 2, 3 };
+
+            // Act
+            await _repository.SaveResults(numbers);
+            var result = await _repository.ReadLastSavedResults();
+
+            // Assert
+            Assert.AreEqual("1 2 3", result);
         }
     }
 }
