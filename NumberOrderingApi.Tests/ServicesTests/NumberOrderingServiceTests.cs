@@ -10,6 +10,7 @@ namespace NumberOrderingApi.Tests.Services
     {
         private Mock<ISortingService> _mockSortingService;
         private Mock<INumbersRepository> _mockNumbersRepository;
+        private Mock<NumberValidationService> _numberValidationService;
         private NumberOrderingService _numberOrderingService;
 
         [TestInitialize]
@@ -17,7 +18,8 @@ namespace NumberOrderingApi.Tests.Services
         {
             _mockSortingService = new Mock<ISortingService>();
             _mockNumbersRepository = new Mock<INumbersRepository>();
-            _numberOrderingService = new NumberOrderingService(_mockSortingService.Object, _mockNumbersRepository.Object);
+            _numberValidationService = new Mock<NumberValidationService>();
+            _numberOrderingService = new NumberOrderingService(_mockSortingService.Object, _mockNumbersRepository.Object, _numberValidationService.Object);
         }
 
         [TestMethod]

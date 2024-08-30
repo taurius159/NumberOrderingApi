@@ -24,29 +24,29 @@ namespace NumberOrderingApi.Tests.Models
         }
 
         [TestMethod]
-        public void Numbers_ShouldNotPassValidation_WhenAtLeastOneNumberIsNotInRangeFrom1To10()
+        public void Numbers_ShouldNotPassValidation_WhenAtLeastOneNumberValueIsNotInRangeFrom1To10()
         {
             // Arrange
-            var modelMoreThan10 = new AddNumberOrderingRequest
+            var modelWithValueMoreThan10 = new AddNumberOrderingRequest
             {
-                Numbers = new int[] { 1, 11 }
+                Numbers = new int[] { 11, 2, 3 }
             };
-            var modelLessThan2 = new AddNumberOrderingRequest
+            var modelWithValueLessThan1 = new AddNumberOrderingRequest
             {
-                Numbers = new int[] {1}
+                Numbers = new int[] {2, 3, 0}
             };
 
             // Act
-            var resultsMoreThan10 = ModelValidationHelper.ValidateModel(modelMoreThan10);
-            var resultsLessThan2 = ModelValidationHelper.ValidateModel(modelLessThan2);
+            var resultsModelWithValueMoreThan10 = ModelValidationHelper.ValidateModel(modelWithValueMoreThan10);
+            var resultsModelWithValueLessThan1 = ModelValidationHelper.ValidateModel(modelWithValueLessThan1);
 
             // Assert
-            Assert.AreNotEqual(0, resultsMoreThan10.Count);
-            Assert.AreNotEqual(0, resultsLessThan2.Count);
+            Assert.AreNotEqual(0, resultsModelWithValueMoreThan10.Count);
+            Assert.AreNotEqual(0, resultsModelWithValueLessThan1.Count);
         }
 
         [TestMethod]
-        public void Numbers_ShouldNotPassValidation_WhenLessThan2ArePassed()
+        public void Numbers_ShouldNotPassValidation_WhenLessThan2ValuesArePassed()
         {
             // Arrange
             var modelLessThan2  = new AddNumberOrderingRequest
@@ -61,7 +61,7 @@ namespace NumberOrderingApi.Tests.Models
         }
 
         [TestMethod]
-        public void Numbers_ShouldNotPassValidation_WhenMoreThan10ArePassed()
+        public void Numbers_ShouldNotPassValidation_WhenMoreThan10ValuesArePassed()
         {
             // Arrange
             var modelMoreThan10 = new AddNumberOrderingRequest

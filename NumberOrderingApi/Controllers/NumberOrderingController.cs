@@ -30,7 +30,7 @@ namespace NumberOrderingApi.Controllers
 
                 if (validationResult != ValidationResult.Success)
                 {
-                    return BadRequest(validationResult.ErrorMessage);
+                    return UnprocessableEntity(validationResult.ErrorMessage);
                 }
                 
                 return Ok("Numbers sorted and saved successfully.");
