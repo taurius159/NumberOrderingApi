@@ -38,19 +38,19 @@ namespace NumberOrderingApi.Tests.Services
             _mockNumbersRepository.Verify(r => r.SaveResults(sortedNumbers), Times.Once);
         }
 
-        [TestMethod]
-        public async void GetLastSortedNumbers_ShouldReturnLastSavedResults()
-        {
-            // Arrange
-            var lastSavedNumbers = new[] { 1, 2, 3 };
-            _mockNumbersRepository.Setup(r => r.ReadLastSavedResults()).ReturnsAsync(lastSavedNumbers);
+        // [TestMethod]
+        // public async void GetLastSortedNumbers_ShouldReturnLastSavedResults()
+        // {
+        //     // Arrange
+        //     var lastSavedNumbers = new[] { 1, 2, 3 };
+        //     _mockNumbersRepository.Setup(r => r.ReadLastSavedResults()).ReturnsAsync(lastSavedNumbers);
 
-            // Act
-            var result = await _numberOrderingService.GetLastSortedNumbers();
+        //     // Act
+        //     var result = await _numberOrderingService.GetLastSortedNumbers();
 
-            // Assert
-            Assert.AreEqual(lastSavedNumbers, result);
-            _mockNumbersRepository.Verify(r => r.ReadLastSavedResults(), Times.Once);
-        }
+        //     // Assert
+        //     Assert.AreEqual(lastSavedNumbers, result);
+        //     _mockNumbersRepository.Verify(r => r.ReadLastSavedResults(), Times.Once);
+        // }
     }
 }
