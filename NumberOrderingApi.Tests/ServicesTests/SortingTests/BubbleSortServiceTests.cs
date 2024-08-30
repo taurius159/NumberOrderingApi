@@ -44,8 +44,8 @@ namespace NumberOrderingApi.Tests.ServicesTests.SortingTests
         public void Sort_ShouldReturnEmptyArray_WhenArrayIsEmpty()
         {
             // Arrange
-            int[] numbers = [];
-            int[] expected = [];
+            int[] numbers = Array.Empty<int>();
+            int[] expected = Array.Empty<int>();
 
             // Act
             int[] actual = _service.Sort(numbers);

@@ -32,6 +32,7 @@ namespace NumberOrderingApi.Services
         public async Task<string> LoadContentOfLatestSavedFile()
         {
             var lastNumbers = await _numbersRepository.ReadLastSavedResults();
+            
             return lastNumbers;
         }
     }
