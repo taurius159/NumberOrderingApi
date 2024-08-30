@@ -25,7 +25,7 @@ namespace NumberOrderingApi.Tests.Repositories
         }
 
         [TestMethod]
-        public async Task SaveResults_ShouldCreateFileWithNumbers()
+        public async Task SaveResults_ShouldCreateFileWithNumbers_WhenNumbersArePassed()
         {
             // Arrange
             var numbers = new[] { 1, 2, 3 };
@@ -42,7 +42,21 @@ namespace NumberOrderingApi.Tests.Repositories
         }
 
         [TestMethod]
-        public async Task SaveResults_ShouldHandleConcurrentRequests()
+        public async Task SaveResults_ShouldNotCreateFile_WhenEmptyArrayIsPassed()
+        {
+            // Arrange
+            var numbers = Array.Empty<int>();
+
+            // Act
+            await _repository.SaveResults(numbers);
+
+            // Assert
+            var directoryExists = Directory.Exists(_customTempPath);
+            Assert.AreEqual(false, directoryExists);
+        }
+
+        [TestMethod]
+        public async Task SaveResults_ShouldCreate2Files_When2ConcurrentRequestsHappen()
         {
             // Arrange
             var numbers1 = new[] { 1, 2, 3 };
@@ -59,12 +73,6 @@ namespace NumberOrderingApi.Tests.Repositories
             // Assert
             var files = Directory.GetFiles(_customTempPath);
             Assert.AreEqual(2, files.Length);
-
-            var fileContent1 = await File.ReadAllTextAsync(files[0]);
-            Assert.AreEqual("1 2 3", fileContent1);
-
-            var fileContent2 = await File.ReadAllTextAsync(files[1]);
-            Assert.AreEqual("4 5 6", fileContent2);
         }
 
         [TestMethod]

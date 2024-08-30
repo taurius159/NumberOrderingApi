@@ -12,6 +12,11 @@ namespace NumberOrderingApi.Data.Repositories
 
         public async Task SaveResults(int[] numbers)
         {
+            if (numbers.Length == 0)
+            {
+                return;
+            }
+            
             await _semaphore.WaitAsync();
             try
             {
