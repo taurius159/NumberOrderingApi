@@ -49,6 +49,11 @@ namespace NumberOrderingApi.Controllers
             {
                 var numbers = await _numberOrderingService.LoadContentOfLatestSavedFile();
 
+                if (numbers == string.Empty)
+                {
+                    return NotFound("No records found.");
+                }
+
                 return Ok(numbers);
             }
             catch (Exception ex)
