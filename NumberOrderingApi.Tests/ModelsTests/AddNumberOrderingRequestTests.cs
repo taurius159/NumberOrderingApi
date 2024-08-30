@@ -66,7 +66,7 @@ namespace NumberOrderingApi.Tests.Models
             // Arrange
             var modelMoreThan10 = new AddNumberOrderingRequest
             {
-                Numbers = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
+                Numbers = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9}
             };
             // Act
             var result = ModelValidationHelper.ValidateModel(modelMoreThan10);
