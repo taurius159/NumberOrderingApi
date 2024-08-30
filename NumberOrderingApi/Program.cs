@@ -13,6 +13,7 @@ builder.Services.AddTransient<INumbersRepository, TxtNumbersRepository>(_ =>
 });
 builder.Services.AddTransient<ISortingService, BubbleSortService>();
 builder.Services.AddTransient<INumberOrderingService, NumberOrderingService>();
+builder.Services.AddTransient<INumberValidationService, NumberValidationService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using NumberOrderingApi.Data.Repositories;
 using NumberOrderingApi.Services.Sorting;
 
@@ -7,20 +8,25 @@ namespace NumberOrderingApi.Services
     {
         private readonly ISortingService _sortingService;
         private readonly INumbersRepository _numbersRepository;
-        public NumberOrderingService(ISortingService sortingService, INumbersRepository numbersRepository)
+        private readonly INumberValidationService _numberValidationService;
+        public NumberOrderingService(ISortingService sortingService, INumbersRepository numbersRepository, INumberValidationService numberValidationService)
         {
             _sortingService = sortingService;
             _numbersRepository = numbersRepository;
+            _numberValidationService = numberValidationService;
         }
 
-        public async Task SortAndSaveNumbers(int[] numbers)
-        {
-            if(numbers == null || numbers.Length == 0)
+        public async Task<ValidationResult> SortAndSaveNumbers(int[] numbers)
+        {          
+            var validationResult = _numberValidationService.ValidateNumbers(numbers);
+
+            if (validationResult != ValidationResult.Success)
             {
-                throw new ArgumentNullException(nameof(numbers));
+                var sortedNumbers = _sortingService.Sort(numbers);
+                await _numbersRepository.SaveResults(sortedNumbers);
             }
-            
-            await _numbersRepository.SaveResults(_sortingService.Sort(numbers));
+
+            return validationResult;
         }
 
         public async Task<int[]> GetLastSortedNumbers()

@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using NumberOrderingApi.Models;
 using NumberOrderingApi.Services;
@@ -18,9 +19,19 @@ namespace NumberOrderingApi.Controllers
         [Route("OrderNumbers")]
         public async Task<IActionResult> OrderNumbers([FromBody] AddNumberOrderingRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
+
             try
             {
-                await _numberOrderingService.SortAndSaveNumbers(request.Numbers);
+                var validationResult = await _numberOrderingService.SortAndSaveNumbers(request.Numbers);
+
+                if (validationResult != ValidationResult.Success)
+                {
+                    return BadRequest(validationResult.ErrorMessage);
+                }
                 
                 return Ok("Numbers sorted and saved successfully.");
             }

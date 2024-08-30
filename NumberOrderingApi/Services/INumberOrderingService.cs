@@ -1,8 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace NumberOrderingApi.Services
 {
     public interface INumberOrderingService
     {
-        Task SortAndSaveNumbers(int[] numbers);
+        Task<ValidationResult> SortAndSaveNumbers(int[] numbers);
 
         Task<int[]> GetLastSortedNumbers();
     }
