@@ -20,7 +20,7 @@ namespace NumberOrderingApi.Services
         {          
             var validationResult = _numberValidationService.ValidateNumbers(numbers);
 
-            if (validationResult != ValidationResult.Success)
+            if (validationResult == ValidationResult.Success)
             {
                 var sortedNumbers = _sortingService.Sort(numbers);
                 await _numbersRepository.SaveResults(sortedNumbers);
@@ -29,7 +29,7 @@ namespace NumberOrderingApi.Services
             return validationResult;
         }
 
-        public async Task<int[]> GetLastSortedNumbers()
+        public async Task<string> LoadContentOfLatestSavedFile()
         {
             var lastNumbers = await _numbersRepository.ReadLastSavedResults();
             return lastNumbers;

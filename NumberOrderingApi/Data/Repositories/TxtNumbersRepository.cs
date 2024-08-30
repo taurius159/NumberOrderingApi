@@ -3,6 +3,7 @@ namespace NumberOrderingApi.Data.Repositories
     public class TxtNumbersRepository : INumbersRepository
     {
         private readonly string _fileDirectory;
+        private static readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
         
         public TxtNumbersRepository(string fileDirectory)
         {
@@ -11,40 +12,43 @@ namespace NumberOrderingApi.Data.Repositories
 
         public async Task SaveResults(int[] numbers)
         {
-            EnsureDirectoryExists(_fileDirectory);
+            await _semaphore.WaitAsync();
+            try
+            {
+                EnsureDirectoryExists(_fileDirectory);
 
-            var filePath = CreateFilePathWithTimestamp(_fileDirectory);
+                var filePath = CreateUniqueFilePathWithTimestamp(_fileDirectory);
 
-            var content = CreateFileContentFromIntArray(numbers);
+                var content = CreateFileContentFromIntArray(numbers);
 
-            await WriteToFileAsync(filePath, content);
+                await File.WriteAllTextAsync(filePath, content);
+            }
+            finally
+            {
+                _semaphore.Release();
+            }
         }
 
-        public async Task<int[]> ReadLastSavedResults()
+        public async Task<string> ReadLastSavedResults()
         {
             if (DirectoryDoesNotExistOrIsEmpty())
             {
-                return [];
+                return string.Empty;
             }
 
             var fileContent = await GetTextFromLatestFile();
 
-            return ParseTextToNumbers(fileContent);
+            return fileContent;
         }
         
-        private string CreateFilePathWithTimestamp(string fileDirectory)
+        private string CreateUniqueFilePathWithTimestamp(string fileDirectory)
         {
-            return Path.Combine(fileDirectory, $"{DateTime.Now:yyyyMMddHHmmssfff}.txt");
+            return Path.Combine(fileDirectory, $"{DateTime.Now:yyyyMMddHHmmssfff}_{Guid.NewGuid()}.txt");
         }
 
         private string CreateFileContentFromIntArray(int[] numbers)
         {
             return string.Join(" ", numbers);
-        }
-
-        private async Task WriteToFileAsync(string filePath, string content)
-        {
-            await File.WriteAllTextAsync(filePath, content);
         }
 
         private void EnsureDirectoryExists(string fileDirectory)
@@ -61,11 +65,6 @@ namespace NumberOrderingApi.Data.Repositories
             var fileContent = await File.ReadAllTextAsync(lastFile);
 
             return fileContent;
-        }
-
-        private int[] ParseTextToNumbers(string content)
-        {
-            return content.Split(' ').Select(int.Parse).ToArray();
         }
 
         private bool DirectoryDoesNotExistOrIsEmpty()

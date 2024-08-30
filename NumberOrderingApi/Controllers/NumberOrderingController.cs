@@ -42,14 +42,14 @@ namespace NumberOrderingApi.Controllers
         }
 
         [HttpGet]
-        [Route("LoadLatestOrderedNumbers")]
-        public async Task<IActionResult> LoadLatestOrderedNumbers()
+        [Route("LoadContentOfLatestSavedFile")]
+        public async Task<IActionResult> LoadContentOfLatestSavedFile()
         {
             try
             {
-                var numbers = await _numberOrderingService.GetLastSortedNumbers();
+                var numbers = await _numberOrderingService.LoadContentOfLatestSavedFile();
 
-                return Ok(string.Join(" ", numbers));
+                return Ok(numbers);
             }
             catch (Exception ex)
             {

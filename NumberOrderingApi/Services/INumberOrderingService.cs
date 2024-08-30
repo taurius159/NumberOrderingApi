@@ -6,6 +6,6 @@ namespace NumberOrderingApi.Services
     {
         Task<ValidationResult> SortAndSaveNumbers(int[] numbers);
 
-        Task<int[]> GetLastSortedNumbers();
+        Task<string> LoadContentOfLatestSavedFile();
     }
 }
