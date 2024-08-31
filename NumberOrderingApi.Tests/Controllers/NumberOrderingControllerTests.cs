@@ -135,8 +135,9 @@ namespace NumberOrderingApi.Tests.Controllers
             var result = await _controller.LoadContentOfLatestSavedFile();
 
             // Assert
-            var notFoundResult = result as NotFoundResult;
+            var notFoundResult = result as NotFoundObjectResult;
             Assert.IsNotNull(notFoundResult);
         }
     }
 }
+
