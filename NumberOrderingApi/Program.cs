@@ -1,8 +1,11 @@
+using System.Numerics;
 using NumberOrderingApi.Data.Repositories;
 using NumberOrderingApi.Services;
 using NumberOrderingApi.Services.Sorting;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -12,6 +15,11 @@ builder.Services.AddTransient<INumbersRepository, TxtNumbersRepository>(_ =>
     return new TxtNumbersRepository("Data");
 });
 builder.Services.AddTransient<ISortingService, BubbleSortService>();
+builder.Services.AddTransient<ISortingService, QuickSortService>();
+builder.Services.AddTransient<ISortingService, MergeSortService>();
+
+builder.Services.AddTransient<ISortPerformerService, SortPerformerService>();
+
 builder.Services.AddTransient<INumberOrderingService, NumberOrderingService>();
 builder.Services.AddTransient<INumberValidationService, NumberValidationService>();
 

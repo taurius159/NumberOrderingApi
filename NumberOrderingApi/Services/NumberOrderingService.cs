@@ -6,12 +6,12 @@ namespace NumberOrderingApi.Services
 {
     public class NumberOrderingService : INumberOrderingService
     {
-        private readonly ISortingService _sortingService;
+        private readonly ISortPerformerService _sortPerformerService;
         private readonly INumbersRepository _numbersRepository;
         private readonly INumberValidationService _numberValidationService;
-        public NumberOrderingService(ISortingService sortingService, INumbersRepository numbersRepository, INumberValidationService numberValidationService)
+        public NumberOrderingService(ISortPerformerService sortPerformerService, INumbersRepository numbersRepository, INumberValidationService numberValidationService)
         {
-            _sortingService = sortingService;
+            _sortPerformerService = sortPerformerService;
             _numbersRepository = numbersRepository;
             _numberValidationService = numberValidationService;
         }
@@ -22,7 +22,7 @@ namespace NumberOrderingApi.Services
 
             if (validationResult == ValidationResult.Success)
             {
-                var sortedNumbers = _sortingService.Sort(numbers);
+                var sortedNumbers = _sortPerformerService.Sort(numbers);
                 await _numbersRepository.SaveResults(sortedNumbers);
             }
 
