@@ -9,7 +9,7 @@ namespace NumberOrderingApi.Tests.Services
     [TestClass]
     public class NumberOrderingServiceTests
     {
-        private Mock<ISortingService> _mockSortingService;
+        private Mock<ISortPerformerService> _mockSortPerformerService;
         private Mock<INumbersRepository> _mockNumbersRepository;
         private Mock<INumberValidationService> _numberValidationService;
         private NumberOrderingService _numberOrderingService;
@@ -17,10 +17,10 @@ namespace NumberOrderingApi.Tests.Services
         [TestInitialize]
         public void Setup()
         {
-            _mockSortingService = new Mock<ISortingService>();
+            _mockSortPerformerService = new Mock<ISortPerformerService>();
             _mockNumbersRepository = new Mock<INumbersRepository>();
             _numberValidationService = new Mock<INumberValidationService>();
-            _numberOrderingService = new NumberOrderingService(_mockSortingService.Object, _mockNumbersRepository.Object, _numberValidationService.Object);
+            _numberOrderingService = new NumberOrderingService(_mockSortPerformerService.Object, _mockNumbersRepository.Object, _numberValidationService.Object);
         }
 
         [TestMethod]
@@ -34,7 +34,7 @@ namespace NumberOrderingApi.Tests.Services
             await _numberOrderingService.SortAndSaveNumbers(numbers);
 
             // Assert
-            _mockSortingService.Verify(s => s.Sort(numbers), Times.Once);
+            _mockSortPerformerService.Verify(s => s.Sort(numbers), Times.Once);
             _mockNumbersRepository.Verify(r => r.SaveResults(It.IsAny<int[]>()), Times.Once);
         }
 
@@ -49,7 +49,7 @@ namespace NumberOrderingApi.Tests.Services
             await _numberOrderingService.SortAndSaveNumbers(numbers);
 
             // Assert
-            _mockSortingService.Verify(s => s.Sort(numbers), Times.Never);
+            _mockSortPerformerService.Verify(s => s.Sort(numbers), Times.Never);
             _mockNumbersRepository.Verify(r => r.SaveResults(It.IsAny<int[]>()), Times.Never);
         }
 
