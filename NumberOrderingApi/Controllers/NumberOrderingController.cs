@@ -38,22 +38,14 @@ namespace NumberOrderingApi.Controllers
         [Route("LoadContentOfLatestSavedFile")]
         public async Task<IActionResult> LoadContentOfLatestSavedFile()
         {
-            try
-            {
-                var numbers = await _numberOrderingService.LoadContentOfLatestSavedFile();
+            var numbers = await _numberOrderingService.LoadContentOfLatestSavedFile();
 
-                if (numbers == string.Empty)
-                {
-                    return NotFound("No records found.");
-                }
-
-                return Ok(numbers);
-            }
-            catch (Exception ex)
+            if (numbers == string.Empty)
             {
-                return StatusCode(500, $"A server error occurred while processing your request. {ex.Message}");
+                return NotFound("No records found.");
             }
-            
+
+            return Ok(numbers);
         }
     }
 }

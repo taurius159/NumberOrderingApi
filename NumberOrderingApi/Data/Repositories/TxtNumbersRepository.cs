@@ -11,12 +11,7 @@ namespace NumberOrderingApi.Data.Repositories
         }
 
         public async Task SaveResults(int[] numbers)
-        {
-            if (numbers.Length == 0)
-            {
-                return;
-            }
-            
+        {   
             await _semaphore.WaitAsync();
             try
             {
@@ -28,6 +23,10 @@ namespace NumberOrderingApi.Data.Repositories
 
                 await File.WriteAllTextAsync(filePath, content);
             }
+            catch(Exception ex)
+            {
+                throw new ApplicationException($"Error occured while saving results to a text file with message: {ex.Message}");
+            }
             finally
             {
                 _semaphore.Release();
@@ -36,14 +35,21 @@ namespace NumberOrderingApi.Data.Repositories
 
         public async Task<string> ReadLastSavedResults()
         {
-            if (DirectoryDoesNotExistOrIsEmpty())
+            try
             {
-                return string.Empty;
+                if (DirectoryDoesNotExistOrIsEmpty())
+                {
+                    return string.Empty;
+                }
+
+                var fileContent = await GetTextFromLatestFile();
+
+                return fileContent;
             }
-
-            var fileContent = await GetTextFromLatestFile();
-
-            return fileContent;
+            catch(Exception ex)
+            {
+                throw new ApplicationException($"Error occured while reading last saved results from a text file with message: {ex.Message}");
+            }
         }
         
         private string CreateUniqueFilePathWithTimestamp(string fileDirectory)
