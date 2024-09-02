@@ -20,7 +20,7 @@ public class ExceptionHandlingMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An unhandled exception has occurred.");
+            _logger.LogError(ex, $"An unhandled exception has occurred with message {ex.Message}.");
             await HandleExceptionAsync(context, ex);
         }
     }
@@ -34,7 +34,7 @@ public class ExceptionHandlingMiddleware
         {
             StatusCode = context.Response.StatusCode,
             Message = "Internal Server Error. Please try again later.",
-            Detailed = exception.Message
+            Detailed = exception.Message 
         };
 
         return context.Response.WriteAsync(JsonSerializer.Serialize(response));
