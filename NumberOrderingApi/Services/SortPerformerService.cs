@@ -29,7 +29,6 @@ namespace NumberOrderingApi.Services
                 }
                 else
                 {
-                    throw new NotImplementedException("Not implemented yet");
                     Task.Run(() => ExecuteAndLogSorting(sortingService, numbers));
                 }
             }
@@ -39,16 +38,24 @@ namespace NumberOrderingApi.Services
 
         private int[] ExecuteAndLogSorting(ISortingService sortingService, int[] numbers)
         {
-            var stopwatch = Stopwatch.StartNew();
-            var sortedNumbers = sortingService.Sort(numbers);
-            stopwatch.Stop();
+            try
+            {
+                var stopwatch = Stopwatch.StartNew();
+                var sortedNumbers = sortingService.Sort(numbers);
+                stopwatch.Stop();
 
-            // Convert elapsed ticks to microseconds
-            var elapsedMicroseconds = stopwatch.ElapsedTicks / (Stopwatch.Frequency / (1000L * 1000L));
+                // Convert elapsed ticks to microseconds
+                var elapsedMicroseconds = stopwatch.ElapsedTicks / (Stopwatch.Frequency / (1000L * 1000L));
 
-            _logger.LogInformation($"{sortingService.GetType().Name} took {elapsedMicroseconds} µs");
+                _logger.LogInformation($"{sortingService.GetType().Name} took {elapsedMicroseconds} µs");
 
-            return sortedNumbers;
+                return sortedNumbers;
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, $"Error occured while sorting with {sortingService.GetType().Name} with message: {ex.Message}");
+                throw new ApplicationException($"Error occured while sorting with {sortingService.GetType().Name} with message: {ex.Message}");
+            }
         }
     }
 }
