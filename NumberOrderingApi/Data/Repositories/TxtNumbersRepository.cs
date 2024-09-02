@@ -4,10 +4,12 @@ namespace NumberOrderingApi.Data.Repositories
     {
         private readonly string _fileDirectory;
         private static readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
+        private readonly ILogger<TxtNumbersRepository> _logger;
         
-        public TxtNumbersRepository(string fileDirectory)
+        public TxtNumbersRepository(string fileDirectory, ILogger<TxtNumbersRepository> logger)
         {
             _fileDirectory = fileDirectory;
+            _logger = logger;
         }
 
         public async Task SaveResults(int[] numbers)
@@ -25,6 +27,7 @@ namespace NumberOrderingApi.Data.Repositories
             }
             catch(Exception ex)
             {
+                _logger.LogError(ex, $"Error occured while saving results to a text file with message: {ex.Message}");
                 throw new ApplicationException($"Error occured while saving results to a text file with message: {ex.Message}");
             }
             finally
@@ -48,6 +51,7 @@ namespace NumberOrderingApi.Data.Repositories
             }
             catch(Exception ex)
             {
+                _logger.LogError(ex, $"Error occured while reading last saved results from a text file with message: {ex.Message}");
                 throw new ApplicationException($"Error occured while reading last saved results from a text file with message: {ex.Message}");
             }
         }
