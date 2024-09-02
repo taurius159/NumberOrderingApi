@@ -24,21 +24,14 @@ namespace NumberOrderingApi.Controllers
                 return UnprocessableEntity(ModelState);
             }
 
-            try
-            {
-                var validationResult = await _numberOrderingService.SortAndSaveNumbers(request.Numbers);
+            var validationResult = await _numberOrderingService.SortAndSaveNumbers(request.Numbers);
 
-                if (validationResult != ValidationResult.Success)
-                {
-                    return UnprocessableEntity(validationResult.ErrorMessage);
-                }
-                
-                return Ok("Numbers sorted and saved successfully.");
-            }
-            catch (Exception ex)
+            if (validationResult != ValidationResult.Success)
             {
-                return StatusCode(500, $"A server error occurred while processing your request. {ex.Message}");
+                return UnprocessableEntity(validationResult.ErrorMessage);
             }
+            
+            return Ok("Numbers sorted and saved successfully.");
         }
 
         [HttpGet]

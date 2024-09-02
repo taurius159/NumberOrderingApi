@@ -29,6 +29,7 @@ namespace NumberOrderingApi.Services
                 }
                 else
                 {
+                    throw new NotImplementedException("Not implemented yet");
                     Task.Run(() => ExecuteAndLogSorting(sortingService, numbers));
                 }
             }
