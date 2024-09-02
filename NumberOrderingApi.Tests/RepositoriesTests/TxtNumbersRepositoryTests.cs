@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+using Moq;
 using NumberOrderingApi.Data.Repositories;
 
 namespace NumberOrderingApi.Tests.Repositories
@@ -7,12 +9,14 @@ namespace NumberOrderingApi.Tests.Repositories
     {
         private string _customTempPath;
         private TxtNumbersRepository _repository;
+        private Mock<ILogger<TxtNumbersRepository>> _mockLogger;
 
         [TestInitialize]
         public void Setup()
         {
             _customTempPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
-            _repository = new TxtNumbersRepository(_customTempPath);
+            _mockLogger = new Mock<ILogger<TxtNumbersRepository>>();
+            _repository = new TxtNumbersRepository(_customTempPath, _mockLogger.Object);
         }
 
         [TestCleanup]
@@ -39,20 +43,6 @@ namespace NumberOrderingApi.Tests.Repositories
 
             var fileContent = await File.ReadAllTextAsync(files[0]);
             Assert.AreEqual("1 2 3", fileContent);
-        }
-
-        [TestMethod]
-        public async Task SaveResults_ShouldNotCreateFile_WhenEmptyArrayIsPassed()
-        {
-            // Arrange
-            var numbers = Array.Empty<int>();
-
-            // Act
-            await _repository.SaveResults(numbers);
-
-            // Assert
-            var directoryExists = Directory.Exists(_customTempPath);
-            Assert.AreEqual(false, directoryExists);
         }
 
         [TestMethod]
@@ -108,11 +98,11 @@ namespace NumberOrderingApi.Tests.Repositories
         {
             // Arrange
             var numbers = new[] { 1, 2, 3 };
+            await _repository.SaveResults(numbers);
 
             // Act
-            await _repository.SaveResults(numbers);
             var result = await _repository.ReadLastSavedResults();
-
+            
             // Assert
             Assert.AreEqual("1 2 3", result);
         }

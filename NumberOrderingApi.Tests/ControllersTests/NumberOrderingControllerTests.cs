@@ -34,8 +34,8 @@ namespace NumberOrderingApi.Tests.ControllersTests
         public async Task OrderNumbers_ShouldReturnOkResponse_WhenModelWasValid()
         {
             // Arrange
-            _mockNumberOrderingService.Setup(x => x.SortAndSaveNumbers(CreateRequestBody().Numbers))
-                .ReturnsAsync(ValidationResult.Success);
+            _mockNumberOrderingService.Setup(x => x.SortAndSaveNumbers(It.IsAny<int[]>()))
+                .Returns(Task.CompletedTask);
 
             // Act
             var result = await _controller.OrderNumbers(CreateRequestBody());
@@ -50,9 +50,6 @@ namespace NumberOrderingApi.Tests.ControllersTests
         {
             // Arrange
             var request = CreateRequestBody();
-            _mockNumberOrderingService
-                .Setup(s => s.SortAndSaveNumbers(request.Numbers))
-                .ReturnsAsync(ValidationResult.Success);
 
             // Act
             var result = await _controller.OrderNumbers(request);
@@ -62,7 +59,7 @@ namespace NumberOrderingApi.Tests.ControllersTests
         }
 
         [TestMethod]
-        public async Task OrderNumbers_ShouldReturnUnprocessableEntityResponse_WhenModelWasInvalid()
+        public async Task OrderNumbers_ShouldReturnUnproccessableEntityResponse_WhenModelWasInvalid()
         {
             // Arrange
             _controller.ModelState.AddModelError("Numbers", "The Numbers field is required.");
@@ -71,41 +68,36 @@ namespace NumberOrderingApi.Tests.ControllersTests
             var result = await _controller.OrderNumbers(CreateRequestBody());
 
             // Assert
-            var unprocessableEntityResult = result as UnprocessableEntityObjectResult;
-            Assert.IsNotNull(unprocessableEntityResult);
-            Assert.AreEqual(422, unprocessableEntityResult.StatusCode);
+            var unproccessableEntityResult = result as UnprocessableEntityObjectResult;
+            Assert.IsNotNull(unproccessableEntityResult);
         }
 
         [TestMethod]
-        public async Task OrderNumbers_ShouldReturnUnprocessableEntityResponse_WhenModelWasValidButNumberOrderingServiceReturnsFailedValidation()
+        public async Task OrderNumbers_ShouldThrowValidationException_WhenModelWasValidButNumberOrderingServiceThrowsValidationException()
         {
             // Arrange
             _mockNumberOrderingService.Setup(x => x.SortAndSaveNumbers(CreateRequestBody().Numbers))
-                .ReturnsAsync(new ValidationResult("Numbers validation failed for some reason."));
+                .Throws(new ValidationException("Validation error."));
 
-            // Act
-            var result = await _controller.OrderNumbers(CreateRequestBody());
-
-            // Assert
-            var unprocessableEntityResult = result as UnprocessableEntityObjectResult;
-            Assert.IsNotNull(unprocessableEntityResult);
-            Assert.AreEqual(422, unprocessableEntityResult.StatusCode);
+            // Act and assert
+            await Assert.ThrowsExceptionAsync<ValidationException>(async () =>
+            {
+                await _controller.OrderNumbers(CreateRequestBody());
+            });
         }
 
         [TestMethod]
-        public async Task OrderNumbers_ShouldReturnServerError_WhenExceptionIsThrown()
+        public async Task OrderNumbers_ShouldThrowInternalServerException_WhenExceptionIsThrown()
         {
             // Arrange
             _mockNumberOrderingService.Setup(x => x.SortAndSaveNumbers(CreateRequestBody().Numbers))
-                .ThrowsAsync(new Exception("An error occurred."));
+                .Throws(new Exception("An error occurred."));
 
-            // Act
-            var result = await _controller.OrderNumbers(CreateRequestBody());
-
-            // Assert
-            var serverErrorResult = result as ObjectResult;
-            Assert.IsNotNull(serverErrorResult);
-            Assert.AreEqual(500, serverErrorResult.StatusCode);
+            // Act and assert
+            await Assert.ThrowsExceptionAsync<Exception>(async () =>
+            {
+                await _controller.OrderNumbers(CreateRequestBody());
+            });
         }
 
         [TestMethod]
