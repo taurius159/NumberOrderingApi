@@ -10,9 +10,9 @@ builder.Logging.AddConsole();
 // Add services to the container.
 builder.Services.AddControllers();
 
-builder.Services.AddTransient<INumbersRepository, TxtNumbersRepository>(_ =>
+builder.Services.AddTransient<INumbersRepository, TxtNumbersRepository>(provider =>
 {
-    return new TxtNumbersRepository("Data");
+    return new TxtNumbersRepository("Data", provider.GetRequiredService<ILogger<TxtNumbersRepository>>());
 });
 builder.Services.AddTransient<ISortingService, BubbleSortService>();
 builder.Services.AddTransient<ISortingService, QuickSortService>();
