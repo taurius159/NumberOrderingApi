@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Text.Json;
 
@@ -20,7 +21,7 @@ public class ExceptionHandlingMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"An unhandled exception has occurred with message {ex.Message}.");
+            _logger.LogError(ex, $"Global Exception handler error with message: {ex.Message}.");
             await HandleExceptionAsync(context, ex);
         }
     }
@@ -28,13 +29,22 @@ public class ExceptionHandlingMiddleware
     private static Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        context.Response.StatusCode = exception switch
+        {
+            ValidationException => (int)HttpStatusCode.BadRequest,
+            ApplicationException => (int)HttpStatusCode.InternalServerError,
+            _ => (int)HttpStatusCode.InternalServerError
+        };
 
         var response = new
         {
             StatusCode = context.Response.StatusCode,
-            Message = "Internal Server Error. Please try again later.",
-            Detailed = exception.Message 
+            Message = exception switch
+            {
+                ValidationException => $"Validation Error: {exception.Message}",
+                ApplicationException => $"Application Error: {exception.Message}. Please try again later.",
+                _ => "Internal Server Error. Please try again later."
+            }
         };
 
         return context.Response.WriteAsync(JsonSerializer.Serialize(response));

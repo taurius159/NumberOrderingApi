@@ -17,6 +17,7 @@ namespace NumberOrderingApi.Data.Repositories
             await _semaphore.WaitAsync();
             try
             {
+                throw new ApplicationException("Error occured while saving results to a text file with message: {ex.Message}");
                 EnsureDirectoryExists(_fileDirectory);
 
                 var filePath = CreateUniqueFilePathWithTimestamp(_fileDirectory);
