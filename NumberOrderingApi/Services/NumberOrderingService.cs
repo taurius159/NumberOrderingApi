@@ -9,24 +9,21 @@ namespace NumberOrderingApi.Services
         private readonly ISortPerformerService _sortPerformerService;
         private readonly INumbersRepository _numbersRepository;
         private readonly INumberValidationService _numberValidationService;
-        public NumberOrderingService(ISortPerformerService sortPerformerService, INumbersRepository numbersRepository, INumberValidationService numberValidationService)
+        private readonly ILogger<NumberOrderingService> _logger;
+        public NumberOrderingService(ISortPerformerService sortPerformerService, INumbersRepository numbersRepository, INumberValidationService numberValidationService, ILogger<NumberOrderingService> logger)
         {
             _sortPerformerService = sortPerformerService;
             _numbersRepository = numbersRepository;
             _numberValidationService = numberValidationService;
+            _logger = logger;
         }
 
-        public async Task<ValidationResult> SortAndSaveNumbers(int[] numbers)
-        {          
-            var validationResult = _numberValidationService.ValidateNumbers(numbers);
-
-            if (validationResult == ValidationResult.Success)
-            {
-                var sortedNumbers = _sortPerformerService.Sort(numbers);
-                await _numbersRepository.SaveResults(sortedNumbers);
-            }
-
-            return validationResult;
+        public async Task SortAndSaveNumbers(int[] numbers)
+        {
+            _numberValidationService.ValidateNumbers(numbers);
+            var sortedNumbers = _sortPerformerService.Sort(numbers);
+            
+            await _numbersRepository.SaveResults(sortedNumbers);
         }
 
         public async Task<string> LoadContentOfLatestSavedFile()

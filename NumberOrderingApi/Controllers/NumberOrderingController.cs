@@ -24,12 +24,7 @@ namespace NumberOrderingApi.Controllers
                 return UnprocessableEntity(ModelState);
             }
 
-            var validationResult = await _numberOrderingService.SortAndSaveNumbers(request.Numbers);
-
-            if (validationResult != ValidationResult.Success)
-            {
-                return UnprocessableEntity(validationResult.ErrorMessage);
-            }
+            await _numberOrderingService.SortAndSaveNumbers(request.Numbers);
 
             return Ok("Numbers sorted and saved successfully.");
         }

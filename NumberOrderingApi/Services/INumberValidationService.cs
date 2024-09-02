@@ -4,6 +4,6 @@ namespace NumberOrderingApi.Services
 {
     public interface INumberValidationService
     {
-        ValidationResult ValidateNumbers(int[] numbers);
+        void ValidateNumbers(int[] numbers);
     }
 }
